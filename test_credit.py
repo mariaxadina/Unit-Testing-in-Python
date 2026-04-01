@@ -30,6 +30,21 @@ class TestCreditValidator(unittest.TestCase):
 
     
     def test_scor_la_limita_de_respingere(self):
-        #500 este respins (conditia in cod este scor > 500)
         res = self.validator.evalueaza_eligibilitate(30, 3000, 500)
         self.assertEqual(res, "Respins: Scor sau venit insuficient")
+
+
+    def test_scor_minim_aprobare(self):
+        res = self.validator.evalueaza_eligibilitate(30, 3000, 501)
+        self.assertEqual(res, "Aprobat: Conditii Standard")
+
+    def test_scor_excelent_frontiera(self):
+        standard = self.validator.evalueaza_eligibilitate(30, 3000, 800)
+        excelent = self.validator.evalueaza_eligibilitate(30, 3000, 801)
+        
+        self.assertEqual(standard, "Aprobat: Conditii Standard")
+        self.assertEqual(excelent, "Aprobat: Conditii Excelente")
+
+    def test_date_invalide_non_numerice(self):
+        with self.assertRaises(TypeError):
+            self.validator.evalueaza_eligibilitate("douazeci", 3000, 600)

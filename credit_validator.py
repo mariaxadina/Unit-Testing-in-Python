@@ -10,11 +10,9 @@ class CreditValidator:
         if not (isinstance(varsta, int) and isinstance(venit_lunar, (int, float))):
             raise TypeError("Datele de intrare trebuie sa fie numerice")
 
-        # Verificare limite varsta (ECP & BVA)
         if varsta < 18 or varsta > 65:
             return "Respins: Varsta neadecvata"
 
-        # Verificare conditii financiare (Decision & Condition Coverage)
         if venit_lunar >= 2000 and scor_credit > 500:
             if scor_credit > 800:
                 return "Aprobat: Conditii Excelente"
