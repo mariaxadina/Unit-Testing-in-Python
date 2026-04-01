@@ -1,0 +1,13 @@
+Pasul 1: Analiza Teoretică (Documentația)Înainte de codul de test, trebuie să definești strategiile. Completează aceste tabele în raportul tău:A. Clase de Echivalență (ECP)VariabilăClasă ValidăClase InvalideVârstă[18, 65]< 18, > 65, non-integerVenit[2000, $\infty$)< 2000Scor(500, 1000]$\leq$ 500B. Valori de Frontieră (BVA)Pentru vârstă, valorile critice sunt: 17, 18, 19 și 64, 65, 66.Pasul 2: Analiza White-Box (Structura)Pentru "Circuite Independente" (Independent Paths), trebuie să urmărim drumurile prin cod.Drumurile din codul nostru:C1: Intrare nevalidă (TypeError).C2: Vârstă prea mică/mare (Return "Respins: Varsta...").C3: Vârstă OK, dar venit mic SAU scor mic (Return "Respins: Scor...").C4: Vârstă OK, Venit OK, Scor între 501 și 800 (Aprobat Standard).C5: Vârstă OK, Venit OK, Scor > 800 (Aprobat Excelent).
+
+
+
+
+# 1. Rulezi testele cu monitorizare
+coverage run -m unittest test_credit.py
+
+# 2. Generarea raportului in consola
+coverage report -m
+
+# 3. Generarea raportului vizual (HTML) - Arata super in proiect!
+coverage html
