@@ -21,3 +21,20 @@ class TestCreditValidator(unittest.TestCase):
         # Testeaza conditia compusa (venit < 2000)
         res = self.validator.evalueaza_eligibilitate(30, 1500, 700)
         self.assertEqual(res, "Respins: Scor sau venit insuficient")
+
+    # --- TESTE PENTRU VENIT LUNAR (BVA & ECP) ---
+    def test_venit_exact_limita(self):
+        # Frontiera: 2000 este venitul minim acceptat
+        res = self.validator.evalueaza_eligibilitate(30, 2000, 600)
+        self.assertIn("Aprobat", res)
+
+    def test_venit_sub_limita(self):
+        # Frontiera: 1999 ar trebui sa fie respins
+        res = self.validator.evalueaza_eligibilitate(30, 1999, 600)
+        self.assertEqual(res, "Respins: Scor sau venit insuficient")
+
+    # --- TESTE PENTRU SCOR CREDIT (Decision & Condition Coverage) ---
+    def test_scor_la_limita_de_respingere(self):
+        # Frontiera: 500 este respins (conditia in cod este scor > 500)
+        res = self.validator.evalueaza_eligibilitate(30, 3000, 500)
+        self.assertEqual(res, "Respins: Scor sau venit insuficient")
