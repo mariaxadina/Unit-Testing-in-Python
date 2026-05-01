@@ -95,12 +95,25 @@ class TestCreditValidator(unittest.TestCase):
             "Aprobat: Conditii Excelente"
         )
 
-    # BOBO ADAUGI AICI FUNCTII PENTRU TESTARE DACA NU AI TOATE CAMPURILE COMPLETATE SAU DACA SUNT DE ALTE TIPURI
-    # 
-    #  
+   #Teste input de tip invalid sau inexistent
+   # BOBO - Testare pentru tipuri de date și parametri absenți
+    
+    def test_varsta_none(self):
+        with self.assertRaises(TypeError):
+            self.validator.evalueaza_eligibilitate(None, 3000, 600)
 
+    def test_parametri_insuficienti(self):
+        with self.assertRaises(TypeError):
+            # Lipsește al treilea parametru (scor_credit)
+            self.validator.evalueaza_eligibilitate(30, 3000)
 
+    def test_tip_data_invalid_lista(self):
+        with self.assertRaises(TypeError):
+            self.validator.evalueaza_eligibilitate(30, [2000], 600)
 
+    def test_scor_credit_string(self):
+        with self.assertRaises(TypeError):
+            self.validator.evalueaza_eligibilitate(30, 3000, "700")
 
 
 if __name__ == "__main__":
