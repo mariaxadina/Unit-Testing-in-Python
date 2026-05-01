@@ -2,49 +2,106 @@ import unittest
 from credit_validator import CreditValidator
 
 class TestCreditValidator(unittest.TestCase):
+
     def setUp(self):
         self.validator = CreditValidator()
 
-    
-    def test_varsta_limita_inferioara(self):
-        self.assertEqual(self.validator.evalueaza_eligibilitate(17, 3000, 600), "Respins: Varsta neadecvata")
-        self.assertIn("Aprobat", self.validator.evalueaza_eligibilitate(18, 3000, 600))
-
-   
-    def test_conditii_excelente(self):
-        res = self.validator.evalueaza_eligibilitate(30, 5000, 850)
-        self.assertEqual(res, "Aprobat: Conditii Excelente")
-
-    def test_venit_insuficient(self):
-        res = self.validator.evalueaza_eligibilitate(30, 1500, 700)
-        self.assertEqual(res, "Respins: Scor sau venit insuficient")
-
-
-    def test_venit_exact_limita(self):
-        res = self.validator.evalueaza_eligibilitate(30, 2000, 600)
-        self.assertIn("Aprobat", res)
-
-    def test_venit_sub_limita(self):
-        res = self.validator.evalueaza_eligibilitate(30, 1999, 600)
-        self.assertEqual(res, "Respins: Scor sau venit insuficient")
-
-    
-    def test_scor_la_limita_de_respingere(self):
-        res = self.validator.evalueaza_eligibilitate(30, 3000, 500)
-        self.assertEqual(res, "Respins: Scor sau venit insuficient")
-
-
-    def test_scor_minim_aprobare(self):
-        res = self.validator.evalueaza_eligibilitate(30, 3000, 501)
-        self.assertEqual(res, "Aprobat: Conditii Standard")
-
-    def test_scor_excelent_frontiera(self):
-        standard = self.validator.evalueaza_eligibilitate(30, 3000, 800)
-        excelent = self.validator.evalueaza_eligibilitate(30, 3000, 801)
-        
-        self.assertEqual(standard, "Aprobat: Conditii Standard")
-        self.assertEqual(excelent, "Aprobat: Conditii Excelente")
-
-    def test_date_invalide_non_numerice(self):
+    # type check - circuit 1
+    def test_date_invalide_varsta_string(self):
         with self.assertRaises(TypeError):
-            self.validator.evalueaza_eligibilitate("douazeci", 3000, 600)
+            self.validator.evalueaza_eligibilitate("20", 3000, 600)
+
+    def test_date_invalide_venit_string(self):
+        with self.assertRaises(TypeError):
+            self.validator.evalueaza_eligibilitate(20, "3000", 600)
+
+
+    # varsta - circuit 2
+    def test_varsta_sub_limita(self):
+        self.assertEqual(
+            self.validator.evalueaza_eligibilitate(17, 3000, 600),
+            "Respins: Varsta neadecvata"
+        )
+
+    def test_varsta_limita_inferioara(self):
+        self.assertIn(
+            "Aprobat",
+            self.validator.evalueaza_eligibilitate(18, 3000, 600)
+        )
+
+    def test_varsta_limita_superioara(self):
+        self.assertIn(
+            "Aprobat",
+            self.validator.evalueaza_eligibilitate(65, 3000, 600)
+        )
+
+    def test_varsta_peste_limita(self):
+        self.assertEqual(
+            self.validator.evalueaza_eligibilitate(66, 3000, 600),
+            "Respins: Varsta neadecvata"
+        )
+
+
+    # venit + scor respins - circuit 3
+    def test_venit_sub_limita(self):
+        self.assertEqual(
+            self.validator.evalueaza_eligibilitate(30, 1999, 700),
+            "Respins: Scor sau venit insuficient"
+        )
+
+    def test_scor_sub_limita(self):
+        self.assertEqual(
+            self.validator.evalueaza_eligibilitate(30, 3000, 500),
+            "Respins: Scor sau venit insuficient"
+        )
+
+    def test_scor_bun_dar_venit_mic(self):
+        self.assertEqual(
+            self.validator.evalueaza_eligibilitate(30, 1500, 900),
+            "Respins: Scor sau venit insuficient"
+        )
+
+
+    # aprobat standard - circuit 4
+    def test_scor_minim_aprobare(self):
+        self.assertEqual(
+            self.validator.evalueaza_eligibilitate(30, 2000, 501),
+            "Aprobat: Conditii Standard"
+        )
+
+    def test_scor_800_standard(self):
+        self.assertEqual(
+            self.validator.evalueaza_eligibilitate(30, 3000, 800),
+            "Aprobat: Conditii Standard"
+        )
+
+    def test_caz_standard_general(self):
+        self.assertEqual(
+            self.validator.evalueaza_eligibilitate(40, 4000, 700),
+            "Aprobat: Conditii Standard"
+        )
+
+
+    # aprobat excelent - circuit 5
+    def test_scor_excelent_minim(self):
+        self.assertEqual(
+            self.validator.evalueaza_eligibilitate(30, 3000, 801),
+            "Aprobat: Conditii Excelente"
+        )
+
+    def test_scor_excelent_mare(self):
+        self.assertEqual(
+            self.validator.evalueaza_eligibilitate(50, 7000, 900),
+            "Aprobat: Conditii Excelente"
+        )
+
+    # BOBO ADAUGI AICI FUNCTII PENTRU TESTARE DACA NU AI TOATE CAMPURILE COMPLETATE SAU DACA SUNT DE ALTE TIPURI
+    # 
+    #  
+
+
+
+
+
+if __name__ == "__main__":
+    unittest.main()
