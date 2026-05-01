@@ -7,7 +7,7 @@ class CreditValidator:
         2. Venit minim 2000 RON.
         3. Scorul de credit trebuie sa fie peste 500.
         """
-        if not (isinstance(varsta, int) and isinstance(venit_lunar, (int, float))):
+        if not (isinstance(varsta, int) and isinstance(venit_lunar, (int, float)) and isinstance(scor_credit, (int, float))):
             raise TypeError("Datele de intrare trebuie sa fie numerice")
 
         if varsta < 18 or varsta > 65:
