@@ -5,6 +5,7 @@ validator = CreditValidator()
 teste = [
     ("20", 3000, 600),
     (20, "3000", 600),
+    (20, 3000, "600"),
     (17, 3000, 600),
     (18, 3000, 600),
     (65, 3000, 600),
@@ -19,10 +20,15 @@ teste = [
     (50, 7000, 900),
 ]
 
+
+
 for i, (v, venit, scor) in enumerate(teste, start=1):
     try:
         rezultat = validator.evalueaza_eligibilitate(v, venit, scor)
     except Exception as e:
         rezultat = type(e).__name__
 
-    print(f"Test {i}: Input=({v}, {venit}, {scor}) -> Output={rezultat}")
+    print(f"Test {i}")
+    print(f"Input: varsta={v}, venit={venit}, scor={scor}")
+    print(f"Output: {rezultat}")
+    print("-" * 50)
