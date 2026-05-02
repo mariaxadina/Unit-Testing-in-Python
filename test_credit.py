@@ -116,5 +116,21 @@ class TestCreditValidator(unittest.TestCase):
             self.validator.evalueaza_eligibilitate(30, 3000, "700")
 
 
+    # omorarea mutantiilor
+    def test_mutant_scor_limita_inferioara_exact(self):
+        # Omoară mutantul de comparație ROR (scor != 500)
+        res = self.validator.evalueaza_eligibilitate(30, 3000, 499)
+        self.assertEqual(res, "Respins: Scor sau venit insuficient")
+
+    def test_mutant_parametri_multipli_invalizi(self):
+        # Omoară mutantul de tip ReplaceAndWithOr (ambii parametri invalizi)
+        with self.assertRaises(TypeError):
+            self.validator.evalueaza_eligibilitate("20", "3000", 600)
+
+    def test_mutant_un_parametru_valid_si_unul_invalid(self):
+        # Omoară mutantul care inversează logica AND cu OR pe tipuri
+        with self.assertRaises(TypeError):
+            self.validator.evalueaza_eligibilitate(20, "3000", 600)
+
 if __name__ == "__main__":
     unittest.main()

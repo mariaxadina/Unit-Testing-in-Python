@@ -11,3 +11,14 @@ coverage report -m
 
 # 3. Generarea raportului vizual (HTML) - Arata super in proiect!
 coverage html
+
+MUTANTI
+
+pip install cosmic-ray
+cosmic-ray exec cosmic-ray.toml session.sqlite
+
+
+mai clar: python report.py
+
+
+python -m unittest test_credit.py
