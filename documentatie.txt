@@ -22,3 +22,6 @@ mai clar: python report.py
 
 
 python -m unittest test_credit.py
+
+
+python3 -m coverage run --branch main.py
