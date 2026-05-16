@@ -26,9 +26,9 @@ for line in result.stdout.splitlines():
             mutation = mutation_info["mutations"][0]
 
             print("\n" + "="*60)
-            print("❌ MUTANT NEOMORÂT")
+            print("MUTANT NEOMORÂT")
             print(f"Operator: {mutation['operator_name']}")
             print(f"Linie: {mutation['start_pos']}")
 
-            print("\n🔧 Modificare:")
+            print("\n Modificare:")
             print(result_info["diff"])

@@ -4,7 +4,7 @@ Pasul 1: Analiza Teoretică (Documentația)Înainte de codul de test, trebuie s�
 
 
 # 1. Rulezi testele cu monitorizare
-coverage run -m unittest test_credit.py
+coverage run --branch -m unittest test_credit.py
 
 # 2. Generarea raportului in consola
 coverage report -m
@@ -22,6 +22,3 @@ mai clar: python report.py
 
 
 python -m unittest test_credit.py
-
-
-python3 -m coverage run --branch main.py
